@@ -1,13 +1,17 @@
----
-- name: Teste AWX
+- name: Lab AWX - 3 tarefas
   hosts: all
-  gather_facts: false
-
+  become: true
   tasks:
-    - name: Ping
-      ansible.builtin.ping:
 
-    - name: Criar arquivo
-      ansible.builtin.copy:
-        dest: /tmp/awx-ok.txt
-        content: "AWX funcionando\n"
+    - name: 1 - Testar conectividade
+      ping:
+
+    - name: 2 - Criar arquivo
+      file:
+        path: /tmp/awx-lab.txt
+        state: touch
+
+    - name: 3 - Escrever conteúdo no arquivo
+      copy:
+        dest: /tmp/awx-lab.txt
+        content: "Arquivo criado pelo AWX 🚀"
