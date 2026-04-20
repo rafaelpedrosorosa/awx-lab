@@ -1,6 +1,6 @@
 - name: Lab AWX - 3 tarefas
   hosts: all
-  become: true
+  become: false
   tasks:
 
     - name: 1 - Testar conectividade
