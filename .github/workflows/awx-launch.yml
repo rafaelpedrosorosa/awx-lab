@@ -13,6 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Test connectivity to AWX
+        run: |
+          echo "Testing AWX URL..."
+          curl -k -I --connect-timeout 10 --max-time 20 "${{ secrets.AWX_URL }}/api/v2/ping/"
+
       - name: Trigger AWX Job
         run: |
           curl -k -X POST "${{ secrets.AWX_URL }}/api/v2/job_templates/${{ secrets.AWX_JOB_TEMPLATE_ID }}/launch/" \
