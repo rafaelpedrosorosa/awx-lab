@@ -1,17 +1,30 @@
-- name: Lab AWX - 3 tarefas
-  hosts: all
-  become: false
+---
+- name: Padronizacao basica de servidor Linux
+  hosts: minha_vm
+  become: true
+
+  vars:
+    evidence_file: /etc/awx-managed.conf
+
   tasks:
+    - name: 1 - Garantir pacote chrony instalado
+      package:
+        name: chrony
+        state: present
 
-    - name: 1 - Testar conectividade
-      ping:
+    - name: 2 - Garantir servico chronyd habilitado e ativo
+      service:
+        name: chronyd
+        state: started
+        enabled: true
 
-    - name: 2 - Criar arquivo
-      file:
-        path: /tmp/awx-lab.txt
-        state: touch
-
-    - name: 3 - Escrever conteúdo no arquivo
+    - name: 3 - Criar arquivo de evidência de gerenciamento
       copy:
-        dest: /tmp/awx-lab.txt
-        content: "Arquivo criado pelo AWX 🚀"
+        dest: "{{ evidence_file }}"
+        content: |
+          managed_by=awx
+          pipeline=github_actions_v2
+          owner=rafael
+        owner: root
+        group: root
+        mode: "0644"
