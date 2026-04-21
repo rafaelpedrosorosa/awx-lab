@@ -1,0 +1,21 @@
+name: Launch AWX Job Template
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  launch-awx:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger AWX Job
+        run: |
+          curl -k -X POST "${{ secrets.AWX_URL }}/api/v2/job_templates/${{ secrets.AWX_JOB_TEMPLATE_ID }}/launch/" \
+            -u "${{ secrets.AWX_USER }}:${{ secrets.AWX_PASSWORD }}" \
+            -H "Content-Type: application/json" \
+            -d '{}'
