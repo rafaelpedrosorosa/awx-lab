@@ -1,5 +1,4 @@
 ---
-# teste pipeline v2
 - name: Padronizacao basica de servidor Linux
   hosts: minha_vm
   become: true
@@ -9,18 +8,18 @@
 
   tasks:
     - name: 1 - Garantir pacote chrony instalado
-      package:
+      ansible.builtin.package:
         name: chrony
         state: present
 
-    - name: 2 - Garantir servico chronyd habilitado e ativo
-      service:
+    - name: 2 - Garantir servico chronyd ativo e habilitado
+      ansible.builtin.service:
         name: chronyd
         state: started
         enabled: true
 
-    - name: 3 - Criar arquivo de evidência de gerenciamento
-      copy:
+    - name: 3 - Criar arquivo de evidência
+      ansible.builtin.copy:
         dest: "{{ evidence_file }}"
         content: |
           managed_by=awx
