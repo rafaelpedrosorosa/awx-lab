@@ -1,4 +1,5 @@
 ---
+# teste execucao
 - name: Padronizacao basica de servidor Linux
   hosts: minha_vm
   become: true
