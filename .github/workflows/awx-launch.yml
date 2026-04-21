@@ -1,17 +1,35 @@
-name: Launch AWX Job Template
+name: Validate and Launch AWX Job Template
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'test.yml'
+      - '.github/workflows/awx-launch.yml'
+      - 'inventories/**'
+      - 'group_vars/**'
+      - 'host_vars/**'
 
 jobs:
-  launch-awx:
+  validate-and-launch:
     runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Check Python version
+        run: python3 --version
+
+      - name: Install ansible-lint
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install ansible-lint ansible-core
+
+      - name: Run ansible-lint
+        run: |
+          ansible-lint test.yml
 
       - name: Test connectivity to AWX
         run: |
